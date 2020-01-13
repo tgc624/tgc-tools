@@ -1,10 +1,16 @@
 import React from "react";
 import AlcoholPage from "./pages/Alcohol.page";
+import VideoEditorPage from "./pages/video-editor/VideoEditor.page";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App: React.FC = () => {
   const pages = [
-    { path: "/alcohol", name: "Alcohol", component: <AlcoholPage /> }
+    { path: "/alcohol", name: "Alcohol", component: <AlcoholPage /> },
+    {
+      path: "/video-editor",
+      name: "Video editor",
+      component: <VideoEditorPage />
+    }
   ];
   const Navi = (
     <nav>
