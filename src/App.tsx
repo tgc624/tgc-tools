@@ -1,8 +1,36 @@
 import React from "react";
 import AlcoholPage from "./pages/Alcohol.page";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App: React.FC = () => {
-  return <AlcoholPage />;
+  const pages = [
+    { path: "/alcohol", name: "Alcohol", component: <AlcoholPage /> }
+  ];
+  const Navi = (
+    <nav>
+      <ul>
+        {pages.map((page, index) => {
+          return (
+            <li key={index}>
+              <Link to={page.path}>{page.name}</Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+  return (
+    <Router>
+      <Switch>
+        {pages.map((page, index) => (
+          <Route key={index} path={page.path}>
+            {page.component}
+          </Route>
+        ))}
+        <Route path="*">{Navi}</Route>
+      </Switch>
+    </Router>
+  );
 };
 
 export default App;
