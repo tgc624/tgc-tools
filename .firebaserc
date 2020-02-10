@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "tgc-tools"
+  },
+  "targets": {
+    "tgc-tools": {
+      "hosting": {
+        "alcohol": [
+          "alcohol"
+        ],
+        "ostle": [
+          "ostle"
+        ]
+      }
+    }
   }
 }

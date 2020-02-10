@@ -4,12 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
+alcohol/node_modules
 
 # testing
 /coverage
 
 # production
 /build
+alcohol/build
 
 # misc
 .DS_Store
