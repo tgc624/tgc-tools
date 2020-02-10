@@ -1,17 +1,23 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# alcohol
+alcohol/build
+alcohol/coverage
 alcohol/node_modules
 
-# testing
-/coverage
+# ostle
+ostle/build
+ostle/coverage
+ostle/node_modules
 
-# production
-/build
-alcohol/build
+# video-editor
+video-editor/build
+video-editor/coverage
+video-editor/node_modules
+
+# dependencies
+/.pnp
+.pnp.js
 
 # misc
 .DS_Store
