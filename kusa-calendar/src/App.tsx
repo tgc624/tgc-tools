@@ -127,7 +127,8 @@ const calcDateDiff = (date1: Date, date2: Date) => {
 };
 
 function App() {
-  const year = 2020;
+  const yearOfParam = new URL(document.location.href).searchParams.get("year");
+  const year = parseInt(yearOfParam || "") || new Date().getFullYear();
   return (
     <div>
       <div>{year}</div>
