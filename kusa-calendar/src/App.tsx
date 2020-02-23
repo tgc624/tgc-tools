@@ -24,15 +24,19 @@ const Month = ({ year }: { year: number }) => {
       return MONTH_NAME[currentMonth];
     });
   };
-  const head = <div />;
+  const head = <div key="head" />;
   const headCells =
-    getDayOfWeekOfJanuary1st(year) === Weeek.Sun ? [] : [<div />];
-  const mainCells = getMonthLabel(daysOfSunday).map(label => (
-    <div className="label__month">{label}</div>
+    getDayOfWeekOfJanuary1st(year) === Weeek.Sun
+      ? []
+      : [<div key="headCell" />];
+  const mainCells = getMonthLabel(daysOfSunday).map((label, index) => (
+    <div key={`mainCell-${index}`} className="label__month">
+      {label}
+    </div>
   ));
   const tailCells = [
     ...new Array(54 - (headCells.length + mainCells.length))
-  ].map(_ => <div />);
+  ].map((_, index) => <div key={`tailCell-${index}`} />);
   return (
     <React.Fragment>
       {[head, ...headCells, ...mainCells, ...tailCells]}
@@ -100,7 +104,8 @@ const Week = ({ week, year }: { year: number; week: Weeek }) => {
   );
   const dates = getAllDateOfDayOfYear(year, week).map(day => day.getDate());
   // const numberOfEmptyTailCells = 2;
-  const headCells = week < getDayOfWeekOfJanuary1st(year) ? [<div />] : [];
+  const headCells =
+    week < getDayOfWeekOfJanuary1st(year) ? [<div key={`headCell`} />] : [];
   const coloredCells = dates.map((date, index) => (
     <div key={`${week}${index}`} className="date">
       <span>{date}</span>
@@ -108,7 +113,7 @@ const Week = ({ week, year }: { year: number; week: Weeek }) => {
   ));
   const tailCells = [
     ...new Array(54 - (headCells.length + coloredCells.length))
-  ].map(_ => <div />);
+  ].map((_, index) => <div key={`tailCell-${index}`} />);
   return (
     <React.Fragment>
       {[head, ...headCells, ...coloredCells, ...tailCells]}
