@@ -3,6 +3,7 @@
   grid-template-columns: 24px repeat(54, 12px);
   grid-template-rows: 18px repeat(7, 12px);
   gap: 3px;
+  padding-bottom: 40px;
 }
 
 .calendar > .date {
@@ -17,6 +18,10 @@
 .calendar > .date > span {
   display: table-cell;
   vertical-align: middle;
+}
+
+.calendar > .label {
+  color: #767676;
 }
 
 .calendar > .label__week {

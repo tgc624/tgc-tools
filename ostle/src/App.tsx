@@ -1,6 +1,10 @@
 import React from "react";
 import * as THREE from "three";
 
+// ----------
+// TODO 白石・黒石の位置
+// ----------
+
 const createLathe = ({ color = 0xa6b5d7, pointn = 10 } = {}) => {
   const points = [];
   for (var i = 0; i < 10; i++) {
@@ -15,7 +19,7 @@ const createLathe = ({ color = 0xa6b5d7, pointn = 10 } = {}) => {
 const createPoints5x5 = () => {
   // @see Three.jsで大量のパーティクルを表示する方法 https://ics.media/tutorial-three/points/
   const size = 300;
-  const normalCoordinate = { x: -size / 2, y: -size / 2 };
+  const normalCoordinate = { x: -size / 2, y: -size / 2 }; // 左下の点の位置
   const space = size / (5 - 1);
   // 形状データを作成
   const geometry = new THREE.Geometry();
@@ -42,6 +46,21 @@ const createPoints5x5 = () => {
   return mesh;
 };
 
+const createInitialKomas = () => {
+  const komaGeometry = new THREE.BoxGeometry(1, 1, 1);
+
+  const koma1Material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const koma2Material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+  const koma1meshes = [...Array(5)].map(
+    i => new THREE.Mesh(komaGeometry.clone(), koma1Material.clone())
+  );
+  const koma2meshes = [...Array(5)].map(
+    i => new THREE.Mesh(komaGeometry.clone(), koma1Material.clone())
+  );
+  koma1meshes[0].position;
+};
+
 const onCanvasLoaded = (canvas: HTMLCanvasElement) => {
   if (!canvas) {
     return;
@@ -62,6 +81,7 @@ const onCanvasLoaded = (canvas: HTMLCanvasElement) => {
   const cube = new THREE.Mesh(geometry, material);
   const lathe = createLathe();
   const points = createPoints5x5();
+  console.log(points);
   // 3D空間にメッシュを追加
   // scene.add(lathe);
   // scene.add(cube);

@@ -15,6 +15,11 @@ video-editor/build
 video-editor/coverage
 video-editor/node_modules
 
+# wordbook
+wordbook/build
+wordbook/coverage
+wordbook/node_modules
+
 # dependencies
 /.pnp
 .pnp.js

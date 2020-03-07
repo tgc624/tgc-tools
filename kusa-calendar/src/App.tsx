@@ -30,7 +30,7 @@ const Month = ({ year }: { year: number }) => {
       ? []
       : [<div key="headCell" />];
   const mainCells = getMonthLabel(daysOfSunday).map((label, index) => (
-    <div key={`mainCell-${index}`} className="label__month">
+    <div key={`mainCell-${index}`} className="label label__month">
       {label}
     </div>
   ));
@@ -96,9 +96,17 @@ const getAllDateOfDayOfYear = (year: number, targetDay: number) => {
 const isWeekNameDisplay = (week: Weeek) =>
   [Weeek.Mon, Weeek.Wed, Weeek.Fri].includes(week);
 
-const Week = ({ week, year }: { year: number; week: Weeek }) => {
+const Week = ({
+  color,
+  week,
+  year
+}: {
+  color?: string;
+  year: number;
+  week: Weeek;
+}) => {
   const head = (
-    <div key={`${week}head`} className="label__week">
+    <div key={`${week}head`} className="label label__week">
       {isWeekNameDisplay(week) ? WEEK_NAME[week] : ""}
     </div>
   );
@@ -107,7 +115,11 @@ const Week = ({ week, year }: { year: number; week: Weeek }) => {
   const headCells =
     week < getDayOfWeekOfJanuary1st(year) ? [<div key={`headCell`} />] : [];
   const coloredCells = dates.map((date, index) => (
-    <div key={`${week}${index}`} className="date">
+    <div
+      key={`${week}${index}`}
+      className="date"
+      style={{ backgroundColor: color }}
+    >
       <span>{date}</span>
     </div>
   ));
@@ -129,18 +141,46 @@ const calcDateDiff = (date1: Date, date2: Date) => {
 function App() {
   const yearOfParam = new URL(document.location.href).searchParams.get("year");
   const year = parseInt(yearOfParam || "") || new Date().getFullYear();
+
+  const colorOfParam = new URL(document.location.href).searchParams.get(
+    "color"
+  );
+  const color = colorOfParam || "";
+
   return (
     <div>
       <div>{year}</div>
       <div className="calendar">
         <Month year={year} />
-        <Week week={Weeek.Sun} year={year} />
-        <Week week={Weeek.Mon} year={year} />
-        <Week week={Weeek.Tue} year={year} />
-        <Week week={Weeek.Wed} year={year} />
-        <Week week={Weeek.Thu} year={year} />
-        <Week week={Weeek.Fri} year={year} />
-        <Week week={Weeek.Sat} year={year} />
+        <Week color={color} week={Weeek.Sun} year={year} />
+        <Week color={color} week={Weeek.Mon} year={year} />
+        <Week color={color} week={Weeek.Tue} year={year} />
+        <Week color={color} week={Weeek.Wed} year={year} />
+        <Week color={color} week={Weeek.Thu} year={year} />
+        <Week color={color} week={Weeek.Fri} year={year} />
+        <Week color={color} week={Weeek.Sat} year={year} />
+      </div>
+      <div>{year}</div>
+      <div className="calendar">
+        <Month year={year} />
+        <Week color="grey" week={Weeek.Sun} year={year} />
+        <Week color="grey" week={Weeek.Mon} year={year} />
+        <Week color="grey" week={Weeek.Tue} year={year} />
+        <Week color="grey" week={Weeek.Wed} year={year} />
+        <Week color="grey" week={Weeek.Thu} year={year} />
+        <Week color="grey" week={Weeek.Fri} year={year} />
+        <Week color="grey" week={Weeek.Sat} year={year} />
+      </div>
+      <div>{year}</div>
+      <div className="calendar">
+        <Month year={year} />
+        <Week color="#aaaaaa" week={Weeek.Sun} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Mon} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Tue} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Wed} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Thu} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Fri} year={year} />
+        <Week color="#aaaaaa" week={Weeek.Sat} year={year} />
       </div>
     </div>
   );
