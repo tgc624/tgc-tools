@@ -22,7 +22,7 @@ const WordCard = ({ word }: { word: Word }) => {
     // TODO フォームにフォーカスする
   };
   const onChangeInputtedValue = (inputtedValue: string) => {
-    if (inputtedValue !== word.meanings) {
+    if (inputtedValue.toLowerCase() !== word.meanings.toLowerCase()) {
       return setValue(inputtedValue);
     }
     setNumberOfTimesEntered(numberOfTimesEntered => numberOfTimesEntered + 1);
