@@ -49,15 +49,15 @@ const getDayOfWeekOfJanuary1st = (year: number) => {
   return new Date(year, 1 - 1, 1).getDay();
 };
 
-const WEEK_NAME = {
-  [Weeek.Sun]: "Sun",
-  [Weeek.Mon]: "Mon",
-  [Weeek.Tue]: "Tue",
-  [Weeek.Wed]: "Wed",
-  [Weeek.Thu]: "Thu",
-  [Weeek.Fri]: "Fri",
-  [Weeek.Sat]: "Sat"
-};
+const WEEK_NAME = Object.freeze([
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat"
+]);
 
 const MONTH_NAME = Object.freeze([
   "Jan",
