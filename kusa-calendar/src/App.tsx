@@ -160,28 +160,6 @@ function App() {
         <Week color={color} week={Weeek.Fri} year={year} />
         <Week color={color} week={Weeek.Sat} year={year} />
       </div>
-      <div>{year}</div>
-      <div className="calendar">
-        <Month year={year} />
-        <Week color="grey" week={Weeek.Sun} year={year} />
-        <Week color="grey" week={Weeek.Mon} year={year} />
-        <Week color="grey" week={Weeek.Tue} year={year} />
-        <Week color="grey" week={Weeek.Wed} year={year} />
-        <Week color="grey" week={Weeek.Thu} year={year} />
-        <Week color="grey" week={Weeek.Fri} year={year} />
-        <Week color="grey" week={Weeek.Sat} year={year} />
-      </div>
-      <div>{year}</div>
-      <div className="calendar">
-        <Month year={year} />
-        <Week color="#aaaaaa" week={Weeek.Sun} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Mon} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Tue} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Wed} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Thu} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Fri} year={year} />
-        <Week color="#aaaaaa" week={Weeek.Sat} year={year} />
-      </div>
     </div>
   );
 }
