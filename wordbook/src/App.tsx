@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "antd/dist/antd.css";
 import { Card, Tag, Input, Row, Col, Affix, Button } from "antd";
 import axios from "axios";
@@ -25,7 +25,7 @@ const WordCard = ({ word }: { word: Word }) => {
     if (inputtedValue.toLowerCase() !== word.meanings.toLowerCase()) {
       return setValue(inputtedValue);
     }
-    setNumberOfTimesEntered(numberOfTimesEntered => numberOfTimesEntered + 1);
+    setNumberOfTimesEntered((numberOfTimesEntered) => numberOfTimesEntered + 1);
     return setValue("");
   };
   return (
@@ -36,7 +36,7 @@ const WordCard = ({ word }: { word: Word }) => {
       onClick={() => onClickWordCard(word)}
       style={{ margin: 8 }}
     >
-      {range(numberOfTimesEntered).map(i => (
+      {range(numberOfTimesEntered).map((i) => (
         <Tag key={i} color="success">
           {word.meanings}
         </Tag>
@@ -44,7 +44,7 @@ const WordCard = ({ word }: { word: Word }) => {
       <Input
         allowClear
         value={value}
-        onChange={event => {
+        onChange={(event) => {
           onChangeInputtedValue(event.target.value);
         }}
         style={{ marginTop: 12 }}
@@ -69,12 +69,14 @@ const shuffle = ([...array]) => {
 
 const App = () => {
   const [words, setWords] = useState([] as Word[]);
+  const [targetWords, setTargetWords] = useState([] as Word[]);
 
   useEffect(() => {
-    getNGSL().then(_words => setWords(_words));
+    getNGSL().then((_words) => setWords(_words));
   }, []);
+  useMemo(() => setTargetWords(words.slice(0, 100)), [words]);
 
-  const wordCards = words.map(word => (
+  const wordCards = targetWords.map((word) => (
     <WordCard key={word.meanings} word={word}></WordCard>
   ));
 
@@ -83,7 +85,7 @@ const App = () => {
       <Affix offsetTop={16}>
         <Button
           type="primary"
-          onClick={() => setWords(words => shuffle(words))}
+          onClick={() => setWords((words) => shuffle(words))}
         >
           Shuffle!
         </Button>
