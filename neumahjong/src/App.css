@@ -4,7 +4,7 @@
   --base-color-dark: #e7ffe0;
   --main-bg-color: brown;
   --base-spacing: 4px;
-  --base-distance: 4px;
+  --base-distance: 2px;
 }
 
 .body {
@@ -20,13 +20,7 @@
   padding: 24px;
 }
 
-.users-section {
-  display: grid;
-  grid-template-columns: repeat(4, calc(100% / 4 - calc(12px * 3 / 4)));
-  gap: 12px;
-}
-
-.total-section {
+.yoko-ni-4tsu-naraberu {
   display: grid;
   grid-template-columns: repeat(4, calc(100% / 4 - calc(12px * 3 / 4)));
   gap: 12px;
@@ -53,6 +47,21 @@
 
 .full-width {
   width: 100%;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.list-item-top {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.list-item-bottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .text-center {

@@ -18,7 +18,7 @@ const UsersSection = ({
   users: [string, string, string, string];
 }) => {
   return (
-    <section className="users-section">
+    <section className="yoko-ni-4tsu-naraberu">
       {users.map((name, index) => (
         <div key={index} className="box convex text-center">
           {name}
@@ -32,9 +32,9 @@ const Score = ({ scores }: { scores: [number, number, number, number] }) => {
   return (
     <React.Fragment>
       {scores.map((score, index) => (
-        <div key={index} className="text-center">
+        <p key={index} className="text-center">
           {score}
-        </div>
+        </p>
       ))}
     </React.Fragment>
   );
@@ -46,7 +46,7 @@ const TotalSection = ({
   totalScore: [number, number, number, number];
 }) => {
   return (
-    <section className="total-section">
+    <section className="yoko-ni-4tsu-naraberu">
       <Score scores={totalScore} />
     </section>
   );
@@ -57,7 +57,31 @@ const HistorySection = ({
 }: {
   histories: [number, number, number, number][];
 }) => {
-  return <section></section>;
+  return (
+    <section className="list">
+      <div className="convex list-item-top yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+      <div className="convex list-item-bottom yoko-ni-4tsu-naraberu">
+        <Score scores={[0, 0, 0, 0]} />
+      </div>
+    </section>
+  );
 };
 
 function App() {
