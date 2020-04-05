@@ -1,0 +1,56 @@
+:root {
+  --base-color: #c9dfc3;
+  --base-color-light: #abbea6;
+  --base-color-dark: #e7ffe0;
+  --main-bg-color: brown;
+  --base-spacing: 4px;
+  --base-distance: 4px;
+}
+
+.body {
+  background: var(--base-color);
+}
+
+.app {
+  padding: 12px;
+}
+
+.box {
+  height: 100px;
+  border-radius: 12px;
+  background: var(--base-color);
+}
+
+.convex {
+  box-shadow: var(--base-distance) var(--base-distance)
+      calc(2 * var(--base-distance)) var(--base-color-light),
+    calc(-1 * var(--base-distance)) calc(-1 * var(--base-distance))
+      calc(2 * var(--base-distance)) var(--base-color-dark);
+}
+
+.concave {
+  box-shadow: inset var(--base-distance) var(--base-distance)
+      calc(2 * var(--base-distance)) var(--base-color-light),
+    inset calc(-1 * var(--base-distance)) calc(-1 * var(--base-distance))
+      calc(2 * var(--base-distance)) var(--base-color-dark);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pa-1 {
+  padding: var(--base-spacing);
+}
+
+.pa-2 {
+  padding: calc(2 * var(--base-spacing));
+}
+
+.pa-3 {
+  padding: calc(3 * var(--base-spacing));
+}
+
+.ma-2 {
+  margin: 2 * var(--base-spacing);
+}
