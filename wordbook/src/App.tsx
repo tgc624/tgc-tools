@@ -81,7 +81,7 @@ const App = () => {
   useEffect(() => {
     getNGSL().then((_words) => setWords(_words));
   }, []);
-  useMemo(() => setTargetWords(words.slice(0, 100)), [words]);
+  useMemo(() => setTargetWords(words.slice(0, 50)), [words]);
 
   const wordCards = targetWords.map((word) => (
     <WordCard key={word.meanings} word={word}></WordCard>
