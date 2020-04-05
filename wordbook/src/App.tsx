@@ -14,6 +14,12 @@ type Word = {
   POS: string;
 };
 
+const speak = (text: string) => {
+  const synthes = new SpeechSynthesisUtterance(text);
+  synthes.lang = "en-US";
+  speechSynthesis.speak(synthes);
+};
+
 const WordCard = ({ word }: { word: Word }) => {
   const [numberOfTimesEntered, setNumberOfTimesEntered] = useState(0);
   const [value, setValue] = useState("");
@@ -25,6 +31,7 @@ const WordCard = ({ word }: { word: Word }) => {
     if (inputtedValue.toLowerCase() !== word.meanings.toLowerCase()) {
       return setValue(inputtedValue);
     }
+    speak(word.meanings);
     setNumberOfTimesEntered((numberOfTimesEntered) => numberOfTimesEntered + 1);
     return setValue("");
   };
