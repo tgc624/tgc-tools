@@ -20,11 +20,23 @@ const UsersSection = ({
   return (
     <section className="users-section">
       {users.map((name, index) => (
-        <div key={index} className="box convex">
+        <div key={index} className="box convex text-center">
           {name}
         </div>
       ))}
     </section>
+  );
+};
+
+const Score = ({ scores }: { scores: [number, number, number, number] }) => {
+  return (
+    <React.Fragment>
+      {scores.map((score, index) => (
+        <div key={index} className="text-center">
+          {score}
+        </div>
+      ))}
+    </React.Fragment>
   );
 };
 
@@ -35,9 +47,7 @@ const TotalSection = ({
 }) => {
   return (
     <section className="total-section">
-      {totalScore.map((score, index) => (
-        <div key={index}>{score}</div>
-      ))}
+      <Score scores={totalScore} />
     </section>
   );
 };
