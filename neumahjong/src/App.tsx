@@ -2,12 +2,18 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-const RulesSection = () => {
+const RulesSection = ({
+  uma,
+  oka,
+}: {
+  uma: [number, number, number, number];
+  oka: [number, number];
+}) => {
   return (
     <section className="box convex">
       <h1>Rules</h1>
-      <p>10, 5, -5, -10</p>
-      <p>25,000／30,000</p>
+      <p>{uma}</p>
+      <p>{oka}</p>
     </section>
   );
 };
@@ -113,10 +119,17 @@ function App() {
   ] as [string, string, string, string]);
   // TODO usersのバリデーションを行う
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
+  const uma = parseJson(params["uma"], [10, 5, -5, -10] as [
+    number,
+    number,
+    number,
+    number
+  ]);
+  const oka = parseJson(params["oka"], [25000, 30000] as [number, number]);
   return (
     <div>
       <article className="top-page">
-        <RulesSection />
+        <RulesSection uma={uma} oka={oka} />
         <UsersSection users={users} />
         <TotalSection totalScore={[0, 0, 0, 0]} />
         <HistorySection histories={[]} />
