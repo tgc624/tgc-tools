@@ -93,11 +93,25 @@ const getQueries = (...paramNames: string[]): { [x: string]: string } => {
   return Object.fromEntries(paramEntities);
 };
 
+function parseJson<T>(json: string, defaultValue: T): T {
+  let value: T;
+  try {
+    value = JSON.parse(json);
+  } catch (error) {
+    return defaultValue;
+  }
+  return value;
+}
+
 function App() {
-  const params = getQueries("users");
-  const users = JSON.parse(params["users"]) as [string, string, string, string];
+  const params = getQueries("users", "uma", "oka");
+  const users = parseJson(params["users"], [
+    "anonymous",
+    "anonymous",
+    "anonymous",
+    "anonymous",
+  ] as [string, string, string, string]);
   // TODO usersのバリデーションを行う
-  // TODO JSON.parseをtry-catchで囲う
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
   return (
     <div>
