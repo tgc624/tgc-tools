@@ -21,7 +21,7 @@ const UsersSection = ({
     <section className="yoko-ni-4tsu-naraberu">
       {users.map((name, index) => (
         <div key={index} className="box convex text-center">
-          {name}
+          <p>{name}</p>
         </div>
       ))}
     </section>
@@ -84,12 +84,26 @@ const HistorySection = ({
   );
 };
 
+const getQueries = (...paramNames: string[]): { [x: string]: string } => {
+  const params = new URL(document.location.href).searchParams;
+  const paramEntities = paramNames.map((paramName) => [
+    paramName,
+    params.get(paramName) || "",
+  ]);
+  return Object.fromEntries(paramEntities);
+};
+
 function App() {
+  const params = getQueries("users");
+  const users = JSON.parse(params["users"]) as [string, string, string, string];
+  // TODO usersのバリデーションを行う
+  // TODO JSON.parseをtry-catchで囲う
+  // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
   return (
     <div>
       <article className="top-page">
         <RulesSection />
-        <UsersSection users={["User A", "User B", "User C", "User D"]} />
+        <UsersSection users={users} />
         <TotalSection totalScore={[0, 0, 0, 0]} />
         <HistorySection histories={[]} />
       </article>
