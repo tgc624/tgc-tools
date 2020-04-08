@@ -99,10 +99,17 @@ const getQueries = (...paramNames: string[]): { [x: string]: string } => {
   return Object.fromEntries(paramEntities);
 };
 
-function parseJson<T>(json: string, defaultValue: T): T {
+function parseJson<T>(
+  json: string,
+  defaultValue: T,
+  isValid?: (value: T) => boolean
+): T {
   let value: T;
   try {
     value = JSON.parse(json);
+    if (typeof isValid === "function" && !isValid(value)) {
+      throw new Error();
+    }
   } catch (error) {
     return defaultValue;
   }
@@ -111,13 +118,23 @@ function parseJson<T>(json: string, defaultValue: T): T {
 
 function App() {
   const params = getQueries("users", "uma", "oka");
-  const users = parseJson(params["users"], [
-    "anonymous",
-    "anonymous",
-    "anonymous",
-    "anonymous",
-  ] as [string, string, string, string]);
-  // TODO usersのバリデーションを行う
+  const isUsersValid = (users: [string, string, string, string]) => {
+    return (
+      Array.isArray(users) &&
+      users.length === 4 &&
+      users.every((user) => typeof user === "string")
+    );
+  };
+  const users = parseJson(
+    params["users"],
+    ["anonymous", "anonymous", "anonymous", "anonymous"] as [
+      string,
+      string,
+      string,
+      string
+    ],
+    isUsersValid
+  );
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
   const uma = parseJson(params["uma"], [10, 5, -5, -10] as [
     number,
