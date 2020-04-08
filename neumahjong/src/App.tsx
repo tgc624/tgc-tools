@@ -136,12 +136,19 @@ function App() {
     isUsersValid
   );
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
-  const uma = parseJson(params["uma"], [10, 5, -5, -10] as [
-    number,
-    number,
-    number,
-    number
-  ]);
+  const isUmaValid = (uma: [number, number, number, number]) => {
+    return (
+      Array.isArray(uma) &&
+      uma.length === 4 &&
+      uma.every((u) => Number.isInteger(u)) &&
+      uma.reduce((acc, cur) => acc + cur) === 0
+    );
+  };
+  const uma = parseJson(
+    params["uma"],
+    [10, 5, -5, -10] as [number, number, number, number],
+    isUmaValid
+  );
   const oka = parseJson(params["oka"], [25000, 30000] as [number, number]);
   return (
     <div>
