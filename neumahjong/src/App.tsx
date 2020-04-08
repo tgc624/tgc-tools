@@ -149,7 +149,18 @@ function App() {
     [10, 5, -5, -10] as [number, number, number, number],
     isUmaValid
   );
-  const oka = parseJson(params["oka"], [25000, 30000] as [number, number]);
+  const isOkaValid = (oka: [number, number]) => {
+    return (
+      Array.isArray(oka) &&
+      oka.length === 2 &&
+      oka.every((u) => Number.isInteger(u))
+    );
+  };
+  const oka = parseJson(
+    params["oka"],
+    [25000, 30000] as [number, number],
+    isOkaValid
+  );
   return (
     <div>
       <article className="top-page">
