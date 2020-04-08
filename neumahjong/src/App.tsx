@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 const RulesSection = ({
@@ -63,29 +62,26 @@ const HistorySection = ({
 }: {
   histories: [number, number, number, number][];
 }) => {
+  const isTopItem = (currentIndex: number) => currentIndex === 0;
+  const isBottomItem = (items: any[], currentIndex: number) => {
+    return items.length - 1 === currentIndex;
+  };
   return (
     <section className="list">
-      <div className="convex list-item-top yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
-      <div className="convex list-item-bottom yoko-ni-4tsu-naraberu">
-        <Score scores={[0, 0, 0, 0]} />
-      </div>
+      {histories.map((history, index) => {
+        return (
+          <div
+            key={index}
+            className={`convex yoko-ni-4tsu-naraberu ${
+              isTopItem(index) ? "list-item-top " : ""
+            }
+              ${isBottomItem(histories, index) ? "list-item-bottom " : ""}
+            }`}
+          >
+            <Score scores={history} />
+          </div>
+        );
+      })}
     </section>
   );
 };
@@ -167,7 +163,13 @@ function App() {
         <RulesSection uma={uma} oka={oka} />
         <UsersSection users={users} />
         <TotalSection totalScore={[0, 0, 0, 0]} />
-        <HistorySection histories={[]} />
+        <HistorySection
+          histories={[
+            [0, 0, 0, 0],
+            [1, 2, 3, 4],
+            [1000, 2000, 4000, 50000],
+          ]}
+        />
       </article>
     </div>
   );
