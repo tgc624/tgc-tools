@@ -12,6 +12,8 @@ const RulesSection = ({
     <section className="box convex">
       <h1>Rules</h1>
       <p>{uma}</p>
+      <p>同点のときウマどうする？起家？分ける？</p>
+      <p>場に残ったリーチ棒の取り扱いは？</p>
       <p>{oka}</p>
     </section>
   );
@@ -62,22 +64,11 @@ const HistorySection = ({
 }: {
   histories: [number, number, number, number][];
 }) => {
-  const isTopItem = (currentIndex: number) => currentIndex === 0;
-  const isBottomItem = (items: any[], currentIndex: number) => {
-    return items.length - 1 === currentIndex;
-  };
   return (
     <section className="list">
       {histories.map((history, index) => {
         return (
-          <div
-            key={index}
-            className={`convex yoko-ni-4tsu-naraberu ${
-              isTopItem(index) ? "list-item-top " : ""
-            }
-              ${isBottomItem(histories, index) ? "list-item-bottom " : ""}
-            }`}
-          >
+          <div key={index} className={`convex yoko-ni-4tsu-naraberu list-item`}>
             <Score scores={history} />
           </div>
         );
