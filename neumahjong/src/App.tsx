@@ -103,6 +103,35 @@ function parseJson<T>(
   return value;
 }
 
+type GameResult = { score: number; rank: 1 | 2 | 3 | 4 };
+type PointResult = { point: number; rank: 1 | 2 | 3 | 4 };
+type Scores = [number, number, number, number];
+type GameResults = [GameResult, GameResult, GameResult, GameResult];
+type Points = [PointResult, PointResult, PointResult, PointResult];
+type Uma = [number, number, number, number];
+type Oka = [number, number];
+
+/** オカを反映させたポイントを返す */
+export const reflectOka = (gameResults: GameResults, oka: Oka) => {
+  const returnScore = oka[1];
+  const kaeshi = gameResults.map((gameResult) => ({
+    point: (gameResult.score - returnScore) / 1000,
+    rank: gameResult.rank,
+  }));
+  const numberOfFirstRank = gameResults.filter((result) => result.rank === 1)
+    .length;
+  const amari = -kaeshi
+    .filter((k) => k.rank !== 1) // 一位じゃないユーザ
+    .map((k) => k.point)
+    .reduce((acc, cur) => acc + cur);
+  const pointOfFirstRank = amari / numberOfFirstRank;
+  const saisyu_kekka = kaeshi.map((k) => ({
+    rank: k.rank,
+    point: k.rank === 1 ? pointOfFirstRank : k.point,
+  }));
+  return saisyu_kekka;
+};
+
 function App() {
   const params = getQueries("users", "uma", "oka");
   const isUsersValid = (users: [string, string, string, string]) => {
