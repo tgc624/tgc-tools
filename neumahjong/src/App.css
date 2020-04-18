@@ -49,21 +49,6 @@
   width: 100%;
 }
 
-.list {
-  display: grid;
-  gap: 8px;
-}
-
-.list-item:first-child {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.list-item:last-child {
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
 .text-center {
   text-align: center;
 }

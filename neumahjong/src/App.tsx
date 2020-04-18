@@ -1,4 +1,5 @@
 import React from "react";
+import NList from "./components/NList/NList";
 import "./App.css";
 
 const RulesSection = ({
@@ -65,15 +66,15 @@ const HistorySection = ({
   histories: [number, number, number, number][];
 }) => {
   return (
-    <section className="list">
+    <NList>
       {histories.map((history, index) => {
         return (
-          <div key={index} className={`convex yoko-ni-4tsu-naraberu list-item`}>
+          <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
             <Score scores={history} />
           </div>
         );
       })}
-    </section>
+    </NList>
   );
 };
 
