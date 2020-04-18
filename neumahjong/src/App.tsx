@@ -107,12 +107,15 @@ type GameResult = { score: number; rank: 1 | 2 | 3 | 4 };
 type PointResult = { point: number; rank: 1 | 2 | 3 | 4 };
 type Scores = [number, number, number, number];
 type GameResults = [GameResult, GameResult, GameResult, GameResult];
-type Points = [PointResult, PointResult, PointResult, PointResult];
+type PointResults = [PointResult, PointResult, PointResult, PointResult];
 type Uma = [number, number, number, number];
 type Oka = [number, number];
 
 /** オカを反映させたポイントを返す */
-export const reflectOka = (gameResults: GameResults, oka: Oka) => {
+export const reflectOka = (
+  gameResults: GameResults,
+  oka: Oka
+): PointResults => {
   const returnScore = oka[1];
   const kaeshi = gameResults.map((gameResult) => ({
     point: (gameResult.score - returnScore) / 1000,
@@ -129,7 +132,14 @@ export const reflectOka = (gameResults: GameResults, oka: Oka) => {
     rank: k.rank,
     point: k.rank === 1 ? pointOfFirstRank : k.point,
   }));
-  return saisyu_kekka;
+  return saisyu_kekka as PointResults;
+};
+
+export const reflectUma = (pointResults: PointResults, uma: Uma) => {
+  return pointResults.map(({ rank, point }) => ({
+    rank,
+    point: point + uma[rank - 1],
+  }));
 };
 
 function App() {

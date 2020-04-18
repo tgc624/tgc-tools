@@ -1,4 +1,4 @@
-import { reflectOka } from "./App";
+import { reflectOka, reflectUma } from "./App";
 // test('renders learn react link', () => {
 //   const { getByText } = render(<App />);
 //   const linkElement = getByText(/learn react/i);
@@ -105,6 +105,42 @@ describe("reflectOka", () => {
       { point: 20, rank: 1 },
       { point: -5, rank: 2 },
       { point: -5, rank: 2 },
+      { point: -10, rank: 4 },
+    ]);
+  });
+});
+describe("reflectUma", () => {
+  test("", () => {
+    const actual = reflectUma(
+      [
+        { point: 0, rank: 1 },
+        { point: 0, rank: 2 },
+        { point: 0, rank: 3 },
+        { point: 0, rank: 4 },
+      ],
+      [10, 5, -5, -10]
+    );
+    expect(actual).toEqual([
+      { point: 10, rank: 1 },
+      { point: 5, rank: 2 },
+      { point: -5, rank: 3 },
+      { point: -10, rank: 4 },
+    ]);
+  });
+  xtest("同点が複数いる場合は、分ける。", () => {
+    const actual = reflectUma(
+      [
+        { point: 0, rank: 1 },
+        { point: 0, rank: 2 },
+        { point: 0, rank: 2 },
+        { point: 0, rank: 4 },
+      ],
+      [10, 5, -5, -10]
+    );
+    expect(actual).toEqual([
+      { point: 10, rank: 1 },
+      { point: 0, rank: 2 },
+      { point: 0, rank: 3 },
       { point: -10, rank: 4 },
     ]);
   });
