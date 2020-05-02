@@ -60,10 +60,16 @@ const TotalSection = ({
   );
 };
 
-const AddHistoryModal = ({ open }: { open: boolean }) => {
+const Modal = ({
+  children,
+  open,
+}: {
+  children?: JSX.Element;
+  open: boolean;
+}) => {
   const ref = useRef<HTMLDialogElement>();
   // @ts-ignore
-  const dialog = <dialog ref={ref}>Add</dialog>;
+  const dialog = <dialog ref={ref}>{children}</dialog>;
 
   if (open) {
     ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
@@ -72,6 +78,10 @@ const AddHistoryModal = ({ open }: { open: boolean }) => {
     ref.current?.close?.();
   }
   return dialog;
+};
+
+const AddHistoryModal = ({ open }: { open: boolean }) => {
+  return <Modal open={open}></Modal>;
 };
 
 const HistorySection = ({
