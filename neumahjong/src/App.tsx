@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import NList from "./components/NList/NList";
 import "./App.css";
 
@@ -60,21 +60,42 @@ const TotalSection = ({
   );
 };
 
+const AddHistoryModal = ({ open }: { open: boolean }) => {
+  const ref = useRef<HTMLDialogElement>();
+  // @ts-ignore
+  const dialog = <dialog ref={ref}>Add</dialog>;
+
+  if (open) {
+    ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
+    ref.current?.showModal?.();
+  } else {
+    ref.current?.close?.();
+  }
+  return dialog;
+};
+
 const HistorySection = ({
   histories,
+  onClickButton,
 }: {
   histories: [number, number, number, number][];
+  onClickButton: () => void;
 }) => {
   return (
-    <NList>
-      {histories.map((history, index) => {
-        return (
-          <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
-            <Score scores={history} />
-          </div>
-        );
-      })}
-    </NList>
+    <>
+      <NList>
+        {histories.map((history, index) => {
+          return (
+            <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
+              <Score scores={history} />
+            </div>
+          );
+        })}
+      </NList>
+      <button className="button convex" onClick={onClickButton}>
+        結果を登録
+      </button>
+    </>
   );
 };
 
@@ -144,6 +165,7 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
 };
 
 function App() {
+  const [isDialogOpen, setDialogOpen] = useState(false);
   const params = getQueries("users", "uma", "oka");
   const isUsersValid = (users: [string, string, string, string]) => {
     return (
@@ -200,7 +222,9 @@ function App() {
             [1, 2, 3, 4],
             [1000, 2000, 4000, 50000],
           ]}
+          onClickButton={() => setDialogOpen((open) => !open)}
         />
+        <AddHistoryModal open={isDialogOpen} />
       </article>
     </div>
   );
