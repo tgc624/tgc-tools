@@ -20,27 +20,46 @@ const RulesSection = ({
   );
 };
 
-const UsersSection = ({
-  users,
-}: {
-  users: [string, string, string, string];
-}) => {
+const User = (props: { name: string; onChange: (name: string) => void }) => {
   const [open, setOpen] = useState(false);
+  return (
+    <>
+      <div
+        className="box clickable convex text-center"
+        onClick={() => setOpen((x) => !x)}
+      >
+        <p>{props.name}</p>
+      </div>
+      <ModifyUserNameModal
+        name={props.name}
+        open={open}
+        toggleOpen={() => setOpen((x) => !x)}
+        onChange={props.onChange}
+      />
+    </>
+  );
+};
 
+const UsersSection = (props: {
+  users: [string, string, string, string];
+  onChange: (users: [string, string, string, string]) => void;
+}) => {
+  const onChangeUser = (name: string, index: number) => {
+    const nextUsers = [...props.users] as [string, string, string, string];
+    nextUsers.splice(index, 1, name);
+    props.onChange(nextUsers);
+  };
   return (
     <>
       <section className="yoko-ni-4tsu-naraberu">
-        {users.map((name, index) => (
-          <div
+        {props.users.map((name, index) => (
+          <User
             key={index}
-            className="box clickable convex text-center"
-            onClick={() => setOpen((x) => !x)}
-          >
-            <p>{name}</p>
-          </div>
+            name={name}
+            onChange={(name: string) => onChangeUser(name, index)}
+          />
         ))}
       </section>
-      <ModifyUserNameModal open={open} toggleOpen={() => setOpen((x) => !x)} />
     </>
   );
 };
@@ -100,13 +119,22 @@ const Modal = (props: {
 };
 
 const ModifyUserNameModal = (props: {
+  name: string;
   open: boolean;
   toggleOpen: () => void;
+  onChange: (name: string) => void;
 }) => {
   return (
     <Modal open={props.open} toggleOpen={props.toggleOpen}>
       <>
-        <input type="text"></input>
+        <input
+          type="text"
+          value={props.name}
+          onChange={(event) => {
+            event.persist();
+            props.onChange(event.target.value);
+          }}
+        ></input>
       </>
     </Modal>
   );
@@ -209,6 +237,8 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
 function App() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const params = getQueries("users", "uma", "oka");
+  console.log(params);
+
   const isUsersValid = (users: [string, string, string, string]) => {
     return (
       Array.isArray(users) &&
@@ -216,15 +246,17 @@ function App() {
       users.every((user) => typeof user === "string")
     );
   };
-  const users = parseJson(
-    params["users"],
-    ["anonymous", "anonymous", "anonymous", "anonymous"] as [
-      string,
-      string,
-      string,
-      string
-    ],
-    isUsersValid
+  const [users, setUsers] = useState(
+    parseJson(
+      params["users"],
+      ["anonymous", "anonymous", "anonymous", "anonymous"] as [
+        string,
+        string,
+        string,
+        string
+      ],
+      isUsersValid
+    )
   );
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
   const isUmaValid = (uma: [number, number, number, number]) => {
@@ -252,11 +284,25 @@ function App() {
     [25000, 30000] as [number, number],
     isOkaValid
   );
+  const changeUsers = (users: [string, string, string, string]) => {
+    setUsers(users);
+    const nextParams = new URLSearchParams();
+    nextParams.append("uma", params["uma"]);
+    nextParams.append("oka", params["oka"]);
+    nextParams.append("users", JSON.stringify(users));
+    nextParams.sort();
+    const nextUrl =
+      window.location.origin +
+      window.location.pathname +
+      "?" +
+      nextParams.toString();
+    window.history.pushState({ path: nextUrl }, "", nextUrl);
+  };
   return (
     <div>
       <article className="top-page">
         <RulesSection uma={uma} oka={oka} />
-        <UsersSection users={users} />
+        <UsersSection users={users} onChange={changeUsers} />
         <TotalSection totalScore={[0, 0, 0, 0]} />
         <HistorySection
           histories={[
