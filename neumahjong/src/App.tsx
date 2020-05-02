@@ -249,12 +249,7 @@ function App() {
   const [users, setUsers] = useState(
     parseJson(
       params["users"],
-      ["anonymous", "anonymous", "anonymous", "anonymous"] as [
-        string,
-        string,
-        string,
-        string
-      ],
+      ["?", "?", "?", "?"] as [string, string, string, string],
       isUsersValid
     )
   );
