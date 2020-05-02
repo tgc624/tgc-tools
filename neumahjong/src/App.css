@@ -85,3 +85,7 @@
 .ma-2 {
   margin: 2 * var(--base-spacing);
 }
+
+.clickable:hover {
+  cursor: pointer;
+}

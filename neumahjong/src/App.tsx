@@ -25,14 +25,23 @@ const UsersSection = ({
 }: {
   users: [string, string, string, string];
 }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <section className="yoko-ni-4tsu-naraberu">
-      {users.map((name, index) => (
-        <div key={index} className="box convex text-center">
-          <p>{name}</p>
-        </div>
-      ))}
-    </section>
+    <>
+      <section className="yoko-ni-4tsu-naraberu">
+        {users.map((name, index) => (
+          <div
+            key={index}
+            className="box clickable convex text-center"
+            onClick={() => setOpen((x) => !x)}
+          >
+            <p>{name}</p>
+          </div>
+        ))}
+      </section>
+      <ModifyUserNameModal open={open} toggleOpen={() => setOpen((x) => !x)} />
+    </>
   );
 };
 
@@ -60,18 +69,28 @@ const TotalSection = ({
   );
 };
 
-const Modal = ({
-  children,
-  open,
-}: {
+const Modal = (props: {
   children?: JSX.Element;
   open: boolean;
+  toggleOpen: () => void;
 }) => {
   const ref = useRef<HTMLDialogElement>();
-  // @ts-ignore
-  const dialog = <dialog ref={ref}>{children}</dialog>;
+  const dialog = (
+    <dialog
+      // @ts-ignore
+      ref={ref}
+      style={{ padding: 0, border: 0 }}
+      onClick={(event) => {
+        event.persist();
+        // @ts-ignore
+        event.target?.localName === "dialog" && props.toggleOpen();
+      }}
+    >
+      {props.children}
+    </dialog>
+  );
 
-  if (open) {
+  if (props.open) {
     ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
     ref.current?.showModal?.();
   } else {
@@ -80,8 +99,21 @@ const Modal = ({
   return dialog;
 };
 
+const ModifyUserNameModal = (props: {
+  open: boolean;
+  toggleOpen: () => void;
+}) => {
+  return (
+    <Modal open={props.open} toggleOpen={props.toggleOpen}>
+      <>
+        <input type="text"></input>
+      </>
+    </Modal>
+  );
+};
+
 const AddHistoryModal = ({ open }: { open: boolean }) => {
-  return <Modal open={open}></Modal>;
+  return <Modal open={open} toggleOpen={() => {}}></Modal>;
 };
 
 const HistorySection = ({
