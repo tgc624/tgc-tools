@@ -70,7 +70,7 @@
 }
 
 .ma-2 {
-  margin: 2 * var(--base-spacing);
+  margin: calc(2 * var(--base-spacing));
 }
 
 .clickable:hover {
