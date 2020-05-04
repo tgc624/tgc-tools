@@ -1,7 +1,7 @@
 :root {
-  --base-color: #c9dfc3;
-  --base-color-light: #abbea6;
-  --base-color-dark: #e7ffe0;
+  --base-color: #ddd;
+  --base-color-light: #9f9f9f;
+  --base-color-dark: #ffffff;
   --main-bg-color: brown;
   --base-spacing: 4px;
   --base-distance: 2px;
