@@ -141,16 +141,21 @@ const ModifyUserNameModal = (props: {
   );
 };
 
-const AddHistoryModal = (props: { open: boolean; toggleOpen: () => void }) => {
+const AddHistoryModal = (props: {
+  open: boolean;
+  toggleOpen: () => void;
+  users: [string, string, string, string];
+}) => {
   return (
     <Modal open={props.open} toggleOpen={props.toggleOpen}>
-      <div>aaa</div>
+      <div>{props.users.toString()}</div>
     </Modal>
   );
 };
 
 const HistorySection = (props: {
   histories: [number, number, number, number][];
+  users: [string, string, string, string];
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const toggleDialogOpen = () => setDialogOpen((x) => !x);
@@ -165,7 +170,11 @@ const HistorySection = (props: {
           );
         })}
       </NList>
-      <AddHistoryModal open={isDialogOpen} toggleOpen={toggleDialogOpen} />
+      <AddHistoryModal
+        users={props.users}
+        open={isDialogOpen}
+        toggleOpen={toggleDialogOpen}
+      />
       <NButton onClick={toggleDialogOpen}>結果を登録</NButton>
     </section>
   );
@@ -304,6 +313,7 @@ function App() {
             [1, 2, 3, 4],
             [1000, 2000, 4000, 50000],
           ]}
+          users={users}
         />
       </article>
     </div>
