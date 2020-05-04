@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import NList from "./components/NList/NList";
+import NButton from "./components/NButton/NButton";
 import "./App.css";
 
 const RulesSection = ({
@@ -140,21 +141,23 @@ const ModifyUserNameModal = (props: {
   );
 };
 
-const AddHistoryModal = ({ open }: { open: boolean }) => {
-  return <Modal open={open} toggleOpen={() => {}}></Modal>;
+const AddHistoryModal = (props: { open: boolean; toggleOpen: () => void }) => {
+  return (
+    <Modal open={props.open} toggleOpen={props.toggleOpen}>
+      <div>aaa</div>
+    </Modal>
+  );
 };
 
-const HistorySection = ({
-  histories,
-  onClickButton,
-}: {
+const HistorySection = (props: {
   histories: [number, number, number, number][];
-  onClickButton: () => void;
 }) => {
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const toggleDialogOpen = () => setDialogOpen((x) => !x);
   return (
-    <>
+    <section>
       <NList>
-        {histories.map((history, index) => {
+        {props.histories.map((history, index) => {
           return (
             <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
               <Score scores={history} />
@@ -162,10 +165,9 @@ const HistorySection = ({
           );
         })}
       </NList>
-      <button className="button convex" onClick={onClickButton}>
-        結果を登録
-      </button>
-    </>
+      <AddHistoryModal open={isDialogOpen} toggleOpen={toggleDialogOpen} />
+      <NButton onClick={toggleDialogOpen}>結果を登録</NButton>
+    </section>
   );
 };
 
@@ -235,7 +237,6 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
 };
 
 function App() {
-  const [isDialogOpen, setDialogOpen] = useState(false);
   const params = getQueries("users", "uma", "oka");
   console.log(params);
 
@@ -305,9 +306,7 @@ function App() {
             [1, 2, 3, 4],
             [1000, 2000, 4000, 50000],
           ]}
-          onClickButton={() => setDialogOpen((open) => !open)}
         />
-        <AddHistoryModal open={isDialogOpen} />
       </article>
     </div>
   );

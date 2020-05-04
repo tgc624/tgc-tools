@@ -31,19 +31,6 @@
   background: var(--base-color);
 }
 
-.button {
-  cursor: pointer;
-  border: none;
-  border-radius: 12px;
-  background: var(--base-color);
-}
-.button:active {
-  box-shadow: inset var(--base-distance) var(--base-distance)
-      calc(2 * var(--base-distance)) var(--base-color-light),
-    inset calc(-1 * var(--base-distance)) calc(-1 * var(--base-distance))
-      calc(2 * var(--base-distance)) var(--base-color-dark);
-}
-
 .convex {
   box-shadow: var(--base-distance) var(--base-distance)
       calc(2 * var(--base-distance)) var(--base-color-light),
