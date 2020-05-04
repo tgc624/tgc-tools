@@ -238,8 +238,6 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
 
 function App() {
   const params = getQueries("users", "uma", "oka");
-  console.log(params);
-
   const isUsersValid = (users: [string, string, string, string]) => {
     return (
       Array.isArray(users) &&
