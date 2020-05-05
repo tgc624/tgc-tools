@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NList from "./components/NList/NList";
+import NInput from "./components/NInput";
 import NButton from "./components/NButton/NButton";
 import "./App.css";
 
@@ -89,6 +90,10 @@ const TotalSection = ({
   );
 };
 
+type DialogClickEvent = React.MouseEvent<HTMLDialogElement, MouseEvent> & {
+  target: { localName: string };
+};
+
 const Modal = (props: {
   children?: JSX.Element;
   open: boolean;
@@ -100,22 +105,23 @@ const Modal = (props: {
       // @ts-ignore
       ref={ref}
       style={{ padding: 0, border: 0 }}
-      onClick={(event) => {
+      onClick={(event: DialogClickEvent) => {
         event.persist();
-        // @ts-ignore
         event.target?.localName === "dialog" && props.toggleOpen();
       }}
     >
       {props.children}
     </dialog>
   );
-
-  if (props.open) {
-    ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
-    ref.current?.showModal?.();
-  } else {
-    ref.current?.close?.();
-  }
+  useEffect(() => {
+    // useEffectを使うことについて→https://github.com/Availity/react-block-ui/issues/40
+    if (props.open) {
+      ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
+      ref.current?.showModal?.();
+    } else {
+      ref.current?.close?.();
+    }
+  }, [props.open]);
   return dialog;
 };
 
@@ -146,9 +152,39 @@ const AddHistoryModal = (props: {
   toggleOpen: () => void;
   users: [string, string, string, string];
 }) => {
+  const [gameResults, setGameResulsts] = useState([
+    { score: 0, rank: 1 },
+    { score: 0, rank: 2 },
+    { score: 0, rank: 3 },
+    { score: 0, rank: 4 },
+  ] as GameResults);
+
+  const setGameResulst = (index: number) => (score: number) => {
+    console.log(score);
+    setGameResulsts(
+      (currentGameResults) =>
+        [
+          ...currentGameResults.slice(0, index),
+          { score, rank: currentGameResults[index].rank },
+          ...currentGameResults.slice(index + 1),
+        ] as GameResults
+    );
+  };
+
   return (
     <Modal open={props.open} toggleOpen={props.toggleOpen}>
-      <div>{props.users.toString()}</div>
+      <>
+        {props.users.map((user, index) => (
+          <p key={index}>
+            <span>{user}</span>
+            <span>{gameResults[index].rank}</span>
+            <NInput
+              value={gameResults[index].score}
+              onChange={setGameResulst(index)}
+            />
+          </p>
+        ))}
+      </>
     </Modal>
   );
 };

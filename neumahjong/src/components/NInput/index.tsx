@@ -3,12 +3,9 @@ import styles from "./NInput.module.css";
 
 export default <T extends number | string>(props: {
   value: T;
-  setValue: (newValue: T) => void;
+  onChange: (newValue: T) => void;
 }) => {
-  const [type, setValue] =
-    typeof props.value === "number"
-      ? ["number", (newValue: string) => props.setValue(+newValue as T)]
-      : ["string", (newValue: string) => props.setValue(newValue as T)];
+  const [type] = typeof props.value === "number" ? ["number"] : ["string"];
   return (
     <input
       className={`concave box ${styles.input}`}
@@ -22,7 +19,7 @@ export default <T extends number | string>(props: {
       value={props.value}
       onChange={(event) => {
         event.persist();
-        setValue(event.target.value);
+        props.onChange(event.target.value as T);
       }}
     />
   );
