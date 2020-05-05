@@ -99,16 +99,10 @@ const ModifyUserNameModal = (props: {
 }) => {
   return (
     <NModal open={props.open} toggleOpen={props.toggleOpen}>
-      <>
-        <input
-          type="text"
-          value={props.name}
-          onChange={(event) => {
-            event.persist();
-            props.onChange(event.target.value);
-          }}
-        ></input>
-      </>
+      <div style={{ padding: 16 }}>
+        <p style={{ margin: 0 }}>プレイヤーの名前を変更します！</p>
+        <NInput value={props.name} onChange={props.onChange} />
+      </div>
     </NModal>
   );
 };
