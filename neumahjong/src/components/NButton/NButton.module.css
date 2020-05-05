@@ -15,3 +15,7 @@
     inset calc(-1 * var(--base-distance)) calc(-1 * var(--base-distance))
       calc(2 * var(--base-distance)) var(--base-color-dark);
 }
+
+.button > div {
+  padding: 4px 4px;
+}
