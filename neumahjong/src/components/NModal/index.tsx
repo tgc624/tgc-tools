@@ -16,7 +16,7 @@ export default (props: {
       // @ts-ignore
       ref={ref}
       style={{ padding: 0, border: 0 }}
-      className={styles.NModal}
+      className={`box ${styles.NModal}`}
       onClick={(event: DialogClickEvent) => {
         event.persist();
         event.target?.localName === "dialog" && props.toggleOpen();
