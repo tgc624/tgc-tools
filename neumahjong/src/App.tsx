@@ -139,6 +139,7 @@ const AddHistoryModal = (props: {
             <span>{gameResults[index].rank}</span>
             <NInput
               label={user}
+              type="number"
               value={gameResults[index].score}
               onChange={setGameResult(index)}
             />

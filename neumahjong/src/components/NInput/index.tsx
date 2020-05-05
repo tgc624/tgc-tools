@@ -3,10 +3,11 @@ import styles from "./NInput.module.css";
 
 export default <T extends number | string>(props: {
   value: T;
+  type?: "number" | "text";
   label?: string;
   onChange: (newValue: T) => void;
 }) => {
-  const [type] = typeof props.value === "number" ? ["number"] : ["string"];
+  const type = props.type || "text";
   return (
     <>
       {(() => {
