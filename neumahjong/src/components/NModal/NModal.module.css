@@ -1,0 +1,4 @@
+.NModal::backdrop {
+  background-color: white;
+  opacity: 0.5;
+}

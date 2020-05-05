@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import NList from "./components/NList/NList";
 import NInput from "./components/NInput";
+import NModal from "./components/NModal";
 import NButton from "./components/NButton/NButton";
 import "./App.css";
 
@@ -90,41 +91,6 @@ const TotalSection = ({
   );
 };
 
-type DialogClickEvent = React.MouseEvent<HTMLDialogElement, MouseEvent> & {
-  target: { localName: string };
-};
-
-const Modal = (props: {
-  children?: JSX.Element;
-  open: boolean;
-  toggleOpen: () => void;
-}) => {
-  const ref = useRef<HTMLDialogElement>();
-  const dialog = (
-    <dialog
-      // @ts-ignore
-      ref={ref}
-      style={{ padding: 0, border: 0 }}
-      onClick={(event: DialogClickEvent) => {
-        event.persist();
-        event.target?.localName === "dialog" && props.toggleOpen();
-      }}
-    >
-      {props.children}
-    </dialog>
-  );
-  useEffect(() => {
-    // useEffectを使うことについて→https://github.com/Availity/react-block-ui/issues/40
-    if (props.open) {
-      ref.current?.close?.(); // close()せずにshowModal()するとエラーになるので、close()する
-      ref.current?.showModal?.();
-    } else {
-      ref.current?.close?.();
-    }
-  }, [props.open]);
-  return dialog;
-};
-
 const ModifyUserNameModal = (props: {
   name: string;
   open: boolean;
@@ -132,7 +98,7 @@ const ModifyUserNameModal = (props: {
   onChange: (name: string) => void;
 }) => {
   return (
-    <Modal open={props.open} toggleOpen={props.toggleOpen}>
+    <NModal open={props.open} toggleOpen={props.toggleOpen}>
       <>
         <input
           type="text"
@@ -143,7 +109,7 @@ const ModifyUserNameModal = (props: {
           }}
         ></input>
       </>
-    </Modal>
+    </NModal>
   );
 };
 
@@ -172,7 +138,7 @@ const AddHistoryModal = (props: {
   };
 
   return (
-    <Modal open={props.open} toggleOpen={props.toggleOpen}>
+    <NModal open={props.open} toggleOpen={props.toggleOpen}>
       <>
         {props.users.map((user, index) => (
           <p key={index}>
@@ -185,7 +151,7 @@ const AddHistoryModal = (props: {
           </p>
         ))}
       </>
-    </Modal>
+    </NModal>
   );
 };
 
