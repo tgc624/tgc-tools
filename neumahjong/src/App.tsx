@@ -120,7 +120,6 @@ const AddHistoryModal = (props: {
   ] as GameResults);
 
   const setGameResult = (index: number) => (score: number) => {
-    console.log(score);
     setGameResults(
       (currentGameResults) =>
         [
@@ -133,18 +132,20 @@ const AddHistoryModal = (props: {
 
   return (
     <NModal open={props.open} toggleOpen={props.toggleOpen}>
-      <>
+      <div style={{ padding: "0px 16px", paddingBottom: 16 }}>
+        <p>新しくスコアを登録します！</p>
         {props.users.map((user, index) => (
-          <p key={index}>
-            <span>{user}</span>
+          <div key={index}>
             <span>{gameResults[index].rank}</span>
             <NInput
+              label={user}
               value={gameResults[index].score}
               onChange={setGameResult(index)}
             />
-          </p>
+          </div>
         ))}
-      </>
+        <NButton onClick={() => {}}>登録</NButton>
+      </div>
     </NModal>
   );
 };
