@@ -112,16 +112,16 @@ const AddHistoryModal = (props: {
   toggleOpen: () => void;
   users: [string, string, string, string];
 }) => {
-  const [gameResults, setGameResulsts] = useState([
+  const [gameResults, setGameResults] = useState([
     { score: 0, rank: 1 },
     { score: 0, rank: 2 },
     { score: 0, rank: 3 },
     { score: 0, rank: 4 },
   ] as GameResults);
 
-  const setGameResulst = (index: number) => (score: number) => {
+  const setGameResult = (index: number) => (score: number) => {
     console.log(score);
-    setGameResulsts(
+    setGameResults(
       (currentGameResults) =>
         [
           ...currentGameResults.slice(0, index),
@@ -140,7 +140,7 @@ const AddHistoryModal = (props: {
             <span>{gameResults[index].rank}</span>
             <NInput
               value={gameResults[index].score}
-              onChange={setGameResulst(index)}
+              onChange={setGameResult(index)}
             />
           </p>
         ))}
