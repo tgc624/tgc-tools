@@ -47,6 +47,7 @@ const AddHistoryModal = (props: {
   open: boolean;
   toggleOpen: () => void;
   users: [string, string, string, string];
+  pushHistories: (gameResults: GameResults) => void;
 }) => {
   const [contentMode, setContentMode] = useState(
     "inputScores" as "inputScores" | "adjustRanks"
@@ -98,13 +99,21 @@ const AddHistoryModal = (props: {
     const unduplicatedScores = new Set(scores);
     return unduplicatedScores.size !== gameResults.length;
   };
-
+  const resetGameResults = () =>
+    setGameResults([
+      { score: 0, rank: 1 },
+      { score: 0, rank: 2 },
+      { score: 0, rank: 3 },
+      { score: 0, rank: 4 },
+    ]);
   const onClickRegisterButton = (currentGameResults: GameResults) => {
     if (areThereAnyPlayersWithTheSameScore(currentGameResults)) {
       setContentMode("adjustRanks");
       return;
     }
-    // 親に追加する
+    props.pushHistories(currentGameResults);
+    resetGameResults();
+    props.toggleOpen();
   };
 
   const getContent = {
@@ -138,6 +147,7 @@ const AddHistoryModal = (props: {
 
 export const HistorySection = (props: {
   histories: [number, number, number, number][];
+  pushHistories: (gameResults: GameResults) => void;
   users: [string, string, string, string];
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -157,6 +167,7 @@ export const HistorySection = (props: {
         users={props.users}
         open={isDialogOpen}
         toggleOpen={toggleDialogOpen}
+        pushHistories={props.pushHistories}
       />
       <NButton onClick={toggleDialogOpen}>結果を登録</NButton>
     </section>

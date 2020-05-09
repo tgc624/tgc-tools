@@ -215,6 +215,11 @@ function App() {
       nextParams.toString();
     window.history.pushState({ path: nextUrl }, "", nextUrl);
   };
+  const [histories, setHistories] = useState([] as GameResults[]);
+  const _histories = histories.map(
+    (gameResults) =>
+      gameResults.map(({ score }) => score) as [number, number, number, number]
+  );
   return (
     <div>
       <article className="top-page">
@@ -222,11 +227,10 @@ function App() {
         <UsersSection users={users} onChange={changeUsers} />
         <TotalSection totalScore={[0, 0, 0, 0]} />
         <HistorySection
-          histories={[
-            [0, 0, 0, 0],
-            [1, 2, 3, 4],
-            [1000, 2000, 4000, 50000],
-          ]}
+          histories={_histories}
+          pushHistories={(gameResults) => {
+            setHistories((histories) => [...histories, gameResults]);
+          }}
           users={users}
         />
       </article>
