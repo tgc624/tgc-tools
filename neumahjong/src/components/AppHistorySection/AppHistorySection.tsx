@@ -47,7 +47,7 @@ const AddHistoryModal = (props: {
   open: boolean;
   toggleOpen: () => void;
   users: [string, string, string, string];
-  pushHistories: (gameResults: GameResults) => void;
+  pushHistory: (gameResults: GameResults) => void;
 }) => {
   const [contentMode, setContentMode] = useState(
     "inputScores" as "inputScores" | "adjustRanks"
@@ -111,7 +111,7 @@ const AddHistoryModal = (props: {
       setContentMode("adjustRanks");
       return;
     }
-    props.pushHistories(currentGameResults);
+    props.pushHistory(currentGameResults);
     resetGameResults();
     props.toggleOpen();
   };
@@ -146,15 +146,15 @@ const AddHistoryModal = (props: {
 };
 
 export const HistorySection = (props: {
-  histories: GameResults[];
-  pushHistories: (gameResults: GameResults) => void;
+  history: GameResults[];
+  pushHistory: (gameResults: GameResults) => void;
   users: [string, string, string, string];
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const toggleDialogOpen = () => setDialogOpen((x) => !x);
-  const scoreHistories = useMemo(
+  const scoreHistory = useMemo(
     () =>
-      props.histories.map(
+      props.history.map(
         (gameResults) =>
           gameResults.map(({ score }) => score) as [
             number,
@@ -163,12 +163,12 @@ export const HistorySection = (props: {
             number
           ]
       ),
-    [props.histories]
+    [props.history]
   );
   return (
     <section>
       <NList>
-        {scoreHistories.map((history, index) => {
+        {scoreHistory.map((history, index) => {
           return (
             <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
               <Score scores={history} />
@@ -180,7 +180,7 @@ export const HistorySection = (props: {
         users={props.users}
         open={isDialogOpen}
         toggleOpen={toggleDialogOpen}
-        pushHistories={props.pushHistories}
+        pushHistory={props.pushHistory}
       />
       <NButton onClick={toggleDialogOpen}>結果を登録</NButton>
     </section>
