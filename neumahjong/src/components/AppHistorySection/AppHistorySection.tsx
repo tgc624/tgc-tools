@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import NList from "./../NList/NList";
 import NInput from "./../NInput";
 import NModal from "./../NModal";
@@ -146,16 +146,29 @@ const AddHistoryModal = (props: {
 };
 
 export const HistorySection = (props: {
-  histories: [number, number, number, number][];
+  histories: GameResults[];
   pushHistories: (gameResults: GameResults) => void;
   users: [string, string, string, string];
 }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const toggleDialogOpen = () => setDialogOpen((x) => !x);
+  const scoreHistories = useMemo(
+    () =>
+      props.histories.map(
+        (gameResults) =>
+          gameResults.map(({ score }) => score) as [
+            number,
+            number,
+            number,
+            number
+          ]
+      ),
+    [props.histories]
+  );
   return (
     <section>
       <NList>
-        {props.histories.map((history, index) => {
+        {scoreHistories.map((history, index) => {
           return (
             <div key={index} className={`convex yoko-ni-4tsu-naraberu`}>
               <Score scores={history} />
