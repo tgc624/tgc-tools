@@ -107,7 +107,7 @@ const AddHistoryModal = (props: {
       setContentMode("adjustRanks");
       return;
     }
-    const gameResults = zip(scores, ranks).map(([score, rank]) => ({
+    const gameResults = zip(adjustedScores, newRanks).map(([score, rank]) => ({
       score,
       rank,
     })) as GameResults;
