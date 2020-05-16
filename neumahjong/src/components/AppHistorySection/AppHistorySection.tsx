@@ -6,6 +6,21 @@ import NButton from "./../NButton/NButton";
 import { GameResults, GameResult } from "./../../types";
 import Score from "./../BaseScore";
 
+type Ranks = [number, number, number, number];
+type Scores = [number, number, number, number];
+
+const areAllValuesInteger = (values: number[]) =>
+  values.every((value) => Number.isInteger(value));
+
+export const getRankEq = (scores: number[]) => {
+  // if (!areAllValuesInteger(scores)) throw Error();
+  const sortedScores = [...scores].sort((a, b) => b - a); // 大きいスコアほど先頭になるようソート
+  return scores.map(
+    (score) =>
+      1 + sortedScores.findIndex((sortedScore) => sortedScore === score)
+  );
+};
+
 const AddHistoryModalContentInputScores = (props: {
   users: [string, string, string, string];
   scores: [number, number, number, number];
@@ -33,14 +48,33 @@ const AddHistoryModalContentInputScores = (props: {
     </div>
   );
 };
+export const getDuplicatedNumber = (
+  numbers: [number, number, number, number]
+) => {
+  const sortedNumbers = [...numbers].sort();
+  const duplicatedNumbers = sortedNumbers.filter(
+    (num, index, _nums) => index !== _nums.findIndex((_num) => num === _num)
+  );
+  return duplicatedNumbers.length === 0 ? NaN : Math.min(...duplicatedNumbers);
+};
+
+const zip = <T extends {}, U>(array1: Array<T>, array2: Array<U>) => {
+  const length = Math.min(array1.length, array2.length);
+  return [...Array(length)].map((_, i) => [array1[i], array2[i]] as [T, U]);
+};
 
 const AddHistoryModalContentAdjustRanks = (props: {
   users: [string, string, string, string];
-  gameResults: GameResults;
-  setGameResults: (newGameResults: GameResults) => void;
+  scores: Scores;
+  ranks: Ranks;
+  setRanks: (ranks: [number, number, number, number]) => void;
 }) => {
   // TODO 名前・スコアはREADONLYで、ランクのみ変更できるようにする
-  return <div></div>;
+  return (
+    <div>
+      <p>{1}着は誰ですか？</p>
+    </div>
+  );
 };
 
 const AddHistoryModal = (props: {
@@ -52,67 +86,26 @@ const AddHistoryModal = (props: {
   const [contentMode, setContentMode] = useState(
     "inputScores" as "inputScores" | "adjustRanks"
   );
-  const [gameResults, setGameResults] = useState([
-    { score: 0, rank: 1 },
-    { score: 0, rank: 2 },
-    { score: 0, rank: 3 },
-    { score: 0, rank: 4 },
-  ] as GameResults);
-  const scores = gameResults.map((gameResult) => gameResult.score) as [
-    number,
-    number,
-    number,
-    number
-  ];
-  /**
-   * scoresからgameResultsを生成する。
-   * 同点の場合、適当にランク付けする。
-   */
-  const getGameResults = (scores: [number, number, number, number]) => {
-    type IndexedGameResults = Array<GameResult & { index: number }>;
-    const compareByScore = (obj1: { score: number }, obj2: { score: number }) =>
-      obj1.score - obj2.score;
-    const compareByIndex = (obj1: { index: number }, obj2: { index: number }) =>
-      obj1.index - obj2.index;
-
-    return scores
-      .map((score, index) => ({
-        score,
-        index,
-        rank: 0,
-      }))
-      .sort(compareByScore)
-      .map((indexedGameResult, index) => ({
-        score: indexedGameResult.score,
-        rank: index + 1,
-        index: indexedGameResult.index,
-      }))
-      .sort(compareByIndex)
-      .map(({ score, rank }) => ({ score, rank })) as GameResults;
+  const [scores, setScores] = useState([0, 0, 0, 0] as Scores);
+  const [ranks, setRanks] = useState([0, 0, 0, 0] as Ranks);
+  const areThereDuplicatedRanks = (ranks: Ranks) => {
+    const distinctRanks = new Set(ranks);
+    return distinctRanks.size !== ranks.length;
   };
-
-  const setScores = (scores: [number, number, number, number]) => {
-    setGameResults(getGameResults(scores));
-  };
-  const areThereAnyPlayersWithTheSameScore = (gameResults: GameResults) => {
-    const scores = gameResults.map((gameResult) => gameResult.score);
-    const unduplicatedScores = new Set(scores);
-    return unduplicatedScores.size !== gameResults.length;
-  };
-  const resetGameResults = () =>
-    setGameResults([
-      { score: 0, rank: 1 },
-      { score: 0, rank: 2 },
-      { score: 0, rank: 3 },
-      { score: 0, rank: 4 },
-    ]);
-  const onClickRegisterButton = (currentGameResults: GameResults) => {
-    if (areThereAnyPlayersWithTheSameScore(currentGameResults)) {
+  const onClickRegisterButton = (scores: Scores, ranks: Ranks) => {
+    const newRanks = getRankEq(scores) as Ranks;
+    setRanks(newRanks);
+    if (areThereDuplicatedRanks(newRanks)) {
       setContentMode("adjustRanks");
       return;
     }
-    props.pushHistory(currentGameResults);
-    resetGameResults();
+    const gameResults = zip(scores, newRanks).map(([score, rank]) => ({
+      score,
+      rank,
+    })) as GameResults;
+    props.pushHistory(gameResults);
+    setRanks([0, 0, 0, 0]);
+    setScores([0, 0, 0, 0]);
     props.toggleOpen();
   };
 
@@ -127,8 +120,9 @@ const AddHistoryModal = (props: {
     adjustRanks: (
       <AddHistoryModalContentAdjustRanks
         users={props.users}
-        gameResults={gameResults}
-        setGameResults={setGameResults}
+        scores={scores}
+        ranks={ranks}
+        setRanks={setRanks}
       />
     ),
   };
@@ -137,7 +131,7 @@ const AddHistoryModal = (props: {
       <div style={{ padding: "0px 16px", paddingBottom: 16 }}>
         <p>新しくスコアを登録します！</p>
         {getContent[contentMode]}
-        <NButton onClick={() => onClickRegisterButton(gameResults)}>
+        <NButton onClick={() => onClickRegisterButton(scores, ranks)}>
           登録
         </NButton>
       </div>
