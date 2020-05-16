@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import NList from "./../NList/NList";
 import NInput from "./../NInput";
 import NModal from "./../NModal";
@@ -25,6 +25,7 @@ const AddHistoryModalContentInputScores = (props: {
   users: [string, string, string, string];
   scores: [number, number, number, number];
   setScores: (newScores: [number, number, number, number]) => void;
+  onClickRegisterButton: () => void;
 }) => {
   const setScore = (index: number) => (newScore: number) => {
     props.setScores([
@@ -45,6 +46,7 @@ const AddHistoryModalContentInputScores = (props: {
         />
       ))}
       {/* TODO 残りの点を表示する */}
+      <NButton onClick={props.onClickRegisterButton}>登録</NButton>
     </div>
   );
 };
@@ -88,24 +90,30 @@ const AddHistoryModal = (props: {
   );
   const [scores, setScores] = useState([0, 0, 0, 0] as Scores);
   const [ranks, setRanks] = useState([0, 0, 0, 0] as Ranks);
+  useEffect(() => {
+    const newRanks = getRankEq(scores) as Ranks;
+    setRanks(newRanks);
+  }, [scores]);
   const areThereDuplicatedRanks = (ranks: Ranks) => {
     const distinctRanks = new Set(ranks);
     return distinctRanks.size !== ranks.length;
   };
-  const onClickRegisterButton = (scores: Scores, ranks: Ranks) => {
-    const newRanks = getRankEq(scores) as Ranks;
-    setRanks(newRanks);
+  const onClickRegisterButtonInInputScores = () => {
+    const adjustedScores = scores.map((score) => +score) as Scores; // 空文字の場合がありうるので
+    const newRanks = getRankEq(adjustedScores) as Ranks;
     if (areThereDuplicatedRanks(newRanks)) {
+      setScores(adjustedScores);
+      setRanks(newRanks);
       setContentMode("adjustRanks");
       return;
     }
-    const gameResults = zip(scores, newRanks).map(([score, rank]) => ({
+    const gameResults = zip(scores, ranks).map(([score, rank]) => ({
       score,
       rank,
     })) as GameResults;
     props.pushHistory(gameResults);
-    setRanks([0, 0, 0, 0]);
     setScores([0, 0, 0, 0]);
+    setRanks([1, 1, 1, 1]);
     props.toggleOpen();
   };
 
@@ -115,6 +123,7 @@ const AddHistoryModal = (props: {
         users={props.users}
         scores={scores}
         setScores={setScores}
+        onClickRegisterButton={onClickRegisterButtonInInputScores}
       />
     ),
     adjustRanks: (
@@ -131,9 +140,6 @@ const AddHistoryModal = (props: {
       <div style={{ padding: "0px 16px", paddingBottom: 16 }}>
         <p>新しくスコアを登録します！</p>
         {getContent[contentMode]}
-        <NButton onClick={() => onClickRegisterButton(scores, ranks)}>
-          登録
-        </NButton>
       </div>
     </NModal>
   );
