@@ -1,4 +1,4 @@
-import { getRankEq, getDuplicatedNumber } from "./AppHistorySection";
+import { getRankEq, getDuplicatedNumber, zip2 } from "./AppHistorySection";
 
 describe(getRankEq.name, () => {
   test("ダブリがない場合は、そのまま返却する", () => {
@@ -34,5 +34,15 @@ describe(getDuplicatedNumber.name, () => {
   test("ダブリが複数ある場合、そのうち一番小さい数字を返却する", () => {
     const actual = getDuplicatedNumber([1, 1, 3, 3]);
     expect(actual).toEqual(1);
+  });
+});
+xdescribe(zip2.name, () => {
+  test("", () => {
+    const actual = zip2([1, 2, 3], ["a", "b", "c"]);
+    expect(actual).toEqual([
+      [1, "a"],
+      [2, "b"],
+      [3, "c"],
+    ]);
   });
 });

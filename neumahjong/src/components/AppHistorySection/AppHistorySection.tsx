@@ -5,6 +5,7 @@ import NModal from "./../NModal";
 import NButton from "./../NButton/NButton";
 import { GameResults, GameResult } from "./../../types";
 import Score from "./../BaseScore";
+import styles from "./AppHistorySection.module.css";
 
 type Ranks = [number, number, number, number];
 type Scores = [number, number, number, number];
@@ -60,9 +61,16 @@ export const getDuplicatedNumber = (
   return duplicatedNumbers.length === 0 ? NaN : Math.min(...duplicatedNumbers);
 };
 
-const zip = <T extends {}, U>(array1: Array<T>, array2: Array<U>) => {
+// TODO zipにひとまとめにする https://html5experts.jp/shumpei-shiraishi/24660/
+export const zip2 = <T extends {}, U>(array1: T[], array2: U[]) => {
   const length = Math.min(array1.length, array2.length);
   return [...Array(length)].map((_, i) => [array1[i], array2[i]] as [T, U]);
+};
+const zip3 = <T extends {}, U, R>(array1: T[], array2: U[], array3: R[]) => {
+  const length = Math.min(array1.length, array2.length, array3.length);
+  return [...Array(length)].map(
+    (_, i) => [array1[i], array2[i], array3[i]] as [T, U, R]
+  );
 };
 
 const AddHistoryModalContentAdjustRanks = (props: {
@@ -71,10 +79,24 @@ const AddHistoryModalContentAdjustRanks = (props: {
   ranks: Ranks;
   setRanks: (ranks: [number, number, number, number]) => void;
 }) => {
+  const targetRank = getDuplicatedNumber(props.ranks);
   // TODO 名前・スコアはREADONLYで、ランクのみ変更できるようにする
   return (
     <div>
-      <p>{1}着は誰ですか？</p>
+      <p>{targetRank}着は誰ですか？</p>
+      {zip3(props.users, props.scores, props.ranks).map(
+        ([user, score, rank], index) => {
+          const displayedRank = targetRank === rank ? "" : rank;
+          return (
+            <div key={index} className={styles.adjustRanksListItem}>
+              <div className="col-2 h-center v-center">{displayedRank}</div>
+              <div className="col-6 h-center v-center">{user}</div>
+              <div className="col-4 h-end v-center">{score}</div>
+            </div>
+          );
+        }
+      )}
+      <NButton onClick={() => {}}>戻る</NButton>
     </div>
   );
 };
@@ -107,7 +129,7 @@ const AddHistoryModal = (props: {
       setContentMode("adjustRanks");
       return;
     }
-    const gameResults = zip(adjustedScores, newRanks).map(([score, rank]) => ({
+    const gameResults = zip2(adjustedScores, newRanks).map(([score, rank]) => ({
       score,
       rank,
     })) as GameResults;
