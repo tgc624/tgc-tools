@@ -5,6 +5,7 @@
   --main-bg-color: brown;
   --base-spacing: 4px;
   --base-distance: 2px;
+  --flex-box-points: 12;
 }
 
 .body {
@@ -75,4 +76,52 @@
 
 .clickable:hover {
   cursor: pointer;
+}
+
+.col-1 {
+  width: calc(100% * 1 / var(--flex-box-points));
+}
+.col-2 {
+  width: calc(100% * 2 / var(--flex-box-points));
+}
+.col-3 {
+  width: calc(100% * 3 / var(--flex-box-points));
+}
+.col-4 {
+  width: calc(100% * 4 / var(--flex-box-points));
+}
+.col-5 {
+  width: calc(100% * 5 / var(--flex-box-points));
+}
+.col-6 {
+  width: calc(100% * 6 / var(--flex-box-points));
+}
+.col-7 {
+  width: calc(100% * 7 / var(--flex-box-points));
+}
+.col-8 {
+  width: calc(100% * 8 / var(--flex-box-points));
+}
+.col-9 {
+  width: calc(100% * 9 / var(--flex-box-points));
+}
+.col-10 {
+  width: calc(100% * 10 / var(--flex-box-points));
+}
+.col-11 {
+  width: calc(100% * 11 / var(--flex-box-points));
+}
+.col-12 {
+  width: calc(100% * 12 / var(--flex-box-points));
+}
+
+.h-center {
+  text-align: center;
+}
+.h-end {
+  text-align: end;
+}
+
+.v-center {
+  align-self: center;
 }
