@@ -160,6 +160,7 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
 };
 
 const useUsers = (userParam: string) => {
+  // TODO クエリから取得する処理もカプセル化する
   const isUsersValid = (users: [string, string, string, string]) => {
     return (
       Array.isArray(users) &&
@@ -176,10 +177,7 @@ const useUsers = (userParam: string) => {
   );
 };
 
-function App() {
-  const params = getQueries("users", "uma", "oka");
-  const [users, setUsers] = useUsers(params["users"]);
-  // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
+const useUma = (umaParam: string) => {
   const isUmaValid = (uma: [number, number, number, number]) => {
     return (
       Array.isArray(uma) &&
@@ -188,11 +186,16 @@ function App() {
       uma.reduce((acc, cur) => acc + cur) === 0
     );
   };
-  const uma = parseJson(
-    params["uma"],
-    [10, 5, -5, -10] as [number, number, number, number],
-    isUmaValid
+  return useState(
+    parseJson(
+      umaParam,
+      [10, 5, -5, -10] as [number, number, number, number],
+      isUmaValid
+    )
   );
+};
+
+const useOka = (okaParam: string) => {
   const isOkaValid = (oka: [number, number]) => {
     return (
       Array.isArray(oka) &&
@@ -200,11 +203,17 @@ function App() {
       oka.every((u) => Number.isInteger(u))
     );
   };
-  const oka = parseJson(
-    params["oka"],
-    [25000, 30000] as [number, number],
-    isOkaValid
+  return useState(
+    parseJson(okaParam, [25000, 30000] as [number, number], isOkaValid)
   );
+};
+
+function App() {
+  const params = getQueries("users", "uma", "oka");
+  const [users, setUsers] = useUsers(params["users"]);
+  // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
+  const [uma] = useUma(params["uma"]);
+  const [oka] = useOka(params["oka"]);
   const changeUsers = (users: [string, string, string, string]) => {
     setUsers(users);
     const nextParams = new URLSearchParams();
