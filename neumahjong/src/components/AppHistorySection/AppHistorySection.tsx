@@ -78,6 +78,7 @@ const AddHistoryModalContentAdjustRanks = (props: {
   scores: Scores;
   ranks: Ranks;
   setRanks: (ranks: [number, number, number, number]) => void;
+  back: () => void;
 }) => {
   const targetRank = getDuplicatedNumber(props.ranks);
   // TODO 名前・スコアはREADONLYで、ランクのみ変更できるようにする
@@ -96,7 +97,7 @@ const AddHistoryModalContentAdjustRanks = (props: {
           );
         }
       )}
-      <NButton onClick={() => {}}>戻る</NButton>
+      <NButton onClick={() => props.back()}>戻る</NButton>
     </div>
   );
 };
@@ -154,6 +155,7 @@ const AddHistoryModal = (props: {
         scores={scores}
         ranks={ranks}
         setRanks={setRanks}
+        back={() => setContentMode("inputScores")}
       />
     ),
   };
