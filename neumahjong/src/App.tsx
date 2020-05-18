@@ -159,8 +159,7 @@ export const reflectUma = (pointResults: PointResults, uma: Uma) => {
   }));
 };
 
-function App() {
-  const params = getQueries("users", "uma", "oka");
+const useUsers = (userParam: string) => {
   const isUsersValid = (users: [string, string, string, string]) => {
     return (
       Array.isArray(users) &&
@@ -168,13 +167,18 @@ function App() {
       users.every((user) => typeof user === "string")
     );
   };
-  const [users, setUsers] = useState(
+  return useState(
     parseJson(
-      params["users"],
+      userParam,
       ["?", "?", "?", "?"] as [string, string, string, string],
       isUsersValid
     )
   );
+};
+
+function App() {
+  const params = getQueries("users", "uma", "oka");
+  const [users, setUsers] = useUsers(params["users"]);
   // TODO usersが不正だったり、4に満たなかったら、登録させるような画面に遷移させる
   const isUmaValid = (uma: [number, number, number, number]) => {
     return (
