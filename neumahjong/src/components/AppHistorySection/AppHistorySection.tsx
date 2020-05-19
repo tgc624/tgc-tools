@@ -85,18 +85,23 @@ const AddHistoryModalContentAdjustRanks = (props: {
   return (
     <div>
       <p>{targetRank}着は誰ですか？</p>
-      {zip3(props.users, props.scores, props.ranks).map(
-        ([user, score, rank], index) => {
-          const displayedRank = targetRank === rank ? "" : rank;
-          return (
-            <div key={index} className={styles.adjustRanksListItem}>
-              <div className="col-2 h-center v-center">{displayedRank}</div>
-              <div className="col-6 h-center v-center">{user}</div>
-              <div className="col-4 h-end v-center">{score}</div>
-            </div>
-          );
-        }
-      )}
+      <div className={`grid-container gap-12`}>
+        {zip3(props.users, props.scores, props.ranks).map(
+          ([user, score, rank], index) => {
+            const [displayedRank, className] =
+              targetRank === rank
+                ? ["", "flex-container box convex"]
+                : [rank, "flex-container box"];
+            return (
+              <div key={index} className={`${className} pa-3`}>
+                <div className="col-2 v-center">{displayedRank}</div>
+                <div className="col-6 h-center v-center">{user}</div>
+                <div className="col-4 h-end v-center">{score}</div>
+              </div>
+            );
+          }
+        )}
+      </div>
       <NButton onClick={() => props.back()}>戻る</NButton>
     </div>
   );
