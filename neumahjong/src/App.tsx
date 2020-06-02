@@ -5,6 +5,7 @@ import HistorySection from "./components/AppHistorySection";
 import Score from "./components/BaseScore";
 import { GameResults } from "./types";
 import "./App.css";
+import "./AppSpacing.css";
 
 const RulesSection = ({
   uma,
