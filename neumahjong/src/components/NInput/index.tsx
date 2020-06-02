@@ -9,7 +9,7 @@ export default <T extends number | string>(props: {
 }) => {
   const type = props.type || "text";
   return (
-    <>
+    <div>
       {(() => {
         if (props.label) {
           return <p className={styles.label}>{props.label}</p>;
@@ -30,6 +30,6 @@ export default <T extends number | string>(props: {
           props.onChange(event.target.value as T);
         }}
       />
-    </>
+    </div>
   );
 };
