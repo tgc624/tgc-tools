@@ -22,6 +22,7 @@ export default <T extends number | string>(props: {
           border: "none",
           padding: 8,
           fontSize: 16,
+          fontFamily: "Meiryo",
         }}
         type={type}
         value={props.value}
