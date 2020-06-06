@@ -15,7 +15,7 @@ export default (props: {
     <dialog
       // @ts-ignore
       ref={ref}
-      style={{ padding: 0, border: 0, width: "95vw" }}
+      style={{ padding: 0, border: 0, width: "75vw" }}
       className={`box ${styles.NModal}`}
       onClick={(event: DialogClickEvent) => {
         event.persist();

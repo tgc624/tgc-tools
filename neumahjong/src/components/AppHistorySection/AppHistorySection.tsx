@@ -37,17 +37,22 @@ const AddHistoryModalContentInputScores = (props: {
   };
   return (
     <div>
-      {props.users.map((user, index) => (
-        <NInput
-          key={index}
-          label={user}
-          type="number"
-          value={props.scores[index]}
-          onChange={setScore(index)}
-        />
-      ))}
-      {/* TODO 残りの点を表示する */}
-      <NButton onClick={props.onClickRegisterButton}>登録</NButton>
+      <h1>新しくスコアを登録します！</h1>
+      <div className="grid-container gap-8">
+        {props.users.map((user, index) => (
+          <NInput
+            key={index}
+            label={user}
+            type="number"
+            value={props.scores[index]}
+            onChange={setScore(index)}
+          />
+        ))}
+        {/* TODO 残りの点を表示する */}
+      </div>
+      <NButton className="mt-3" onClick={props.onClickRegisterButton}>
+        登録
+      </NButton>
     </div>
   );
 };
@@ -84,23 +89,29 @@ const AddHistoryModalContentAdjustRanks = (props: {
   // TODO 名前・スコアはREADONLYで、ランクのみ変更できるようにする
   return (
     <div>
-      <p>{targetRank}着は誰ですか？</p>
-      <div className={`grid-container gap-12`}>
-        {zip3(props.users, props.scores, props.ranks).map(
-          ([user, score, rank], index) => {
-            const [displayedRank, className] =
-              targetRank === rank
-                ? ["", "flex-container box convex"]
-                : [rank, "flex-container box"];
-            return (
-              <div key={index} className={`${className} pa-3`}>
-                <div className="col-2 v-center">{displayedRank}</div>
-                <div className="col-6 h-center v-center">{user}</div>
-                <div className="col-4 h-end v-center">{score}</div>
+      <h1>{targetRank}着は誰ですか？</h1>
+      <div className="grid-container gap-8">
+        {props.users.map((user, index) => (
+          <div key={index}>
+            <p className={`label`}>{user}</p>
+            <div className={`flex-container`}>
+              <div className={`flex-8`} style={{ padding: 8 }}>
+                {props.scores[index]}
               </div>
-            );
-          }
-        )}
+              <div className={"flex-4 h-center v-center"}>
+                {props.ranks[index] === targetRank ? (
+                  <NButton
+                    className="v-center"
+                    onClick={() => {}}
+                  >{`${props.ranks[index]}着?`}</NButton>
+                ) : (
+                  <div className="v-center">{`${props.ranks[index]}着`}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* TODO 残りの点を表示する */}
       </div>
       <NButton onClick={() => props.back()}>戻る</NButton>
     </div>
@@ -167,7 +178,6 @@ const AddHistoryModal = (props: {
   return (
     <NModal open={props.open} toggleOpen={props.toggleOpen}>
       <div style={{ padding: "0px 16px", paddingBottom: 16 }}>
-        <p>新しくスコアを登録します！</p>
         {getContent[contentMode]}
       </div>
     </NModal>
